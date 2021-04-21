@@ -13,10 +13,18 @@ const App = () => {
     {value: 3, name: 'Blues'}
   ]
 
+  const handleSubmit = (e) => {
+    e.preventDefault()
+  }
+
   return (
     <div className="App">
       {/* <Header />  */}
-      <Dropdown options={downContent} />
+      <form onSubmit={handleSubmit}>
+        <Dropdown options={downContent} />
+        <Dropdown options={downContent} />
+        <button type="submit">Get Categories</button>
+      </form>
     </div>
   );
 }
