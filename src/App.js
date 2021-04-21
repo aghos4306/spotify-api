@@ -5,7 +5,9 @@ import axios from 'axios'
 import './App.css'
 
 const App = () => {
-  //const [token, setToken] = useState('')
+  const [token, setToken] = useState('')
+
+  console.log('spotify tokenization render')
 
   const downContent = [
     {value: 1, name: 'soul'},
@@ -15,8 +17,26 @@ const App = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
+    console.log('search api')
   }
 
+
+    
+  useEffect(() => {
+    axios('https://accounts.spotify.com/api/token', {
+      headers: {
+        'Content-Type' : 'application/x-www-form-urlencoded',
+        'Authorization' : 'Basic ' + btoa(process.env.REACT_APP_CLIENT_ID + ':' + process.env.REACT_APP_CLIENT_SECRET)      
+      },
+      data: 'grant_type=client_credentials',
+      method: 'POST'
+    })
+    .then(tokenResponse => {      
+      setToken(tokenResponse.data.access_token);
+    })
+
+  }, [])
+  
   return (
     <div className="App">
       {/* <Header />  */}
