@@ -31,9 +31,10 @@ const App = () => {
       data: 'grant_type=client_credentials',
       method: 'POST'
     })
-    .then(tokenResponse => {      
+    .then(tokenResponse => {   
+      //console.log(tokenResponse.data.access_token)   
       setToken(tokenResponse.data.access_token);
-    })
+    }) 
 
   }, [])
   
