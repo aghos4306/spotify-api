@@ -13,6 +13,7 @@ const App = () => {
   const [token, setToken] = useState('')
   const [genres, setGenres] = useState({ selectedGenre: '', listOfGenresFromApi:[] })
   const [playlist, setPlaylist] = useState({ selectedPlaylist: '', listOfPlaylistFromApi:[] })
+  const [tracks, setTracks] = useState({ selectedTracks: '', listOfTracksFromApi:[] })
 
   console.log('spotify tokenization render')
 
@@ -56,9 +57,7 @@ const App = () => {
     })
     }) 
 
-  }, [genres.selectedGenre]);
-
- 
+  }, [genres.selectedGenre, keys.ClientId, keys.ClientSecret]);
 
   const genreChanged = (val) => {
     setGenres({
@@ -86,7 +85,23 @@ const App = () => {
     })
   }
 
+  const buttonClicked = (e) => {
+    e.preventDefault()
 
+    axios(`https://api.spotify.com/v1/playlists/${playlist.selectedPlaylist}/tracks?limit=10`, {
+      method: 'GET',
+      headers: {
+        'Authorization' : 'Bearer ' + token
+      }
+    })
+    .then(tracksResponse => {
+      console.log(tracksResponse)
+      setTracks({
+        selectedTracks: tracks.selectedTracks,
+        listOfTracksFromApi: tracksResponse.data.items
+      })
+    })
+  }
   
   return (
     <div className="App">
