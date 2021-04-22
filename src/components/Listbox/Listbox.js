@@ -8,13 +8,15 @@ const Listbox = props => {
     }
 
     return (
-        <div>
-            {
-                props.items.map((item, idx) => 
-                <button key={idx} id={item.track.id} onClick={clicked}>
-                    {item.track.name}
-                </button>)
-            }
+        <div className="container">
+            <div className="list-group">
+                {
+                    props.items.map((item, idx) => 
+                    <button key={idx} id={item.track.id} onClick={clicked} className="track-item">
+                        {item.track.name}
+                    </button>)
+                }
+            </div>
         </div>
     )
 }
