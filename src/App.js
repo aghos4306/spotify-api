@@ -6,7 +6,8 @@ import './App.css'
 
 const App = () => {
   const [token, setToken] = useState('')
-  const [genres, setGenres] = useState([])
+  const [genres, setGenres] = useState({ selectedGenre: '', listOfGenresFromApi:[] })
+  const [playlist, setPlaylist] = useState({ selectedPlaylist: '', listOfPlaylistFromApi:[] })
 
   console.log('spotify tokenization render')
 
@@ -21,8 +22,6 @@ const App = () => {
     console.log('search api')
   }
 
-
-    
   useEffect(() => {
     //get token
     axios('https://accounts.spotify.com/api/token', {
@@ -43,19 +42,50 @@ const App = () => {
       headers: { 'Authorization' : 'Bearer ' + tokenResponse.data.access_token }
     })
     .then(genreResponse => {
-      console.log(genreResponse.data.categories.items)
-      setGenres(genreResponse.data.categories.items)
+      //console.log(genreResponse.data.categories.items)
+      //setGenres(genreResponse.data.categories.items)
+      setGenres({
+        selectedGenre: genres.selectedGenre,
+        listOfGenresFromApi: genreResponse.data.categories.items
+      })
     })
     }) 
 
-  }, [])
+  }, [genres.selectedGenre]);
+
+  // eslint-disable-next-line no-undef
+  axios(`https://api.spotify.com/v1/browse/categories/${val}/playlists?limit=10`, {
+    method: 'GET',
+    header: { 'Authorization' : 'Bearer ' + token }
+  })
+  .then(playlistResponse => {
+    console.log(playlistResponse)
+    setPlaylist({
+      selectedPlaylist: playlist.selectedPlaylist,
+      listOfPlaylistFromApi: playlistResponse.data.playlist.item
+    })
+  })
+
+  const genreChanged = (val) => {
+    setGenres({
+      selectedGenre: val,
+      listOfGenresFromApi: genres.listOfGenresFromApi
+    })
+  }
+
+  const playlistChanged = val => {
+    setPlaylist({
+      selectedPlaylist: val,
+      listOfPlaylistFromApi: playlist.listOfPlaylistFromApi
+    })
+  }
   
   return (
     <div className="App">
       {/* <Header />  */}
       <form onSubmit={handleSubmit}>
-        <Dropdown options={genres} />
-        <Dropdown options={downContent} />
+        <Dropdown options={genres.listOfGenresFromApi} selectedValue={genres.selectedGenre} changed={genreChanged} />
+        <Dropdown options={playlist.listOfPlaylistFromApi} selectedValue={playlist.selectedPlaylist} changed={playlistChanged} />
         <button type="submit">Get Categories</button>
       </form>
     </div>

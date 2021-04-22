@@ -1,23 +1,27 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './dropdown.css'
 
 const Dropdown = props => {
 
-    const [selectedDropValue, setSelectDropValue] = useState('')
+    //const [selectedDropValue, setSelectDropValue] = useState('')
 
-    const handleOnChange = (e) => {
+    /* const handleOnChange = (e) => {
         setSelectDropValue(e.target.value)
+    } */
+
+    const dropdownChanged = (e) => {
+        props.changed(e.target.value)
     }
 
     return (
         <div className="container">
-            <select value={selectedDropValue} onChange={handleOnChange}>
+            <select value={props.selectedDropValue} onChange={dropdownChanged}>
                {props.options.map((item, index) => 
-               <option key={index} value={item.value}>
+               <option key={index} value={item.id}>
                    {item.name}
                </option>)}
             </select>
-            <p>{selectedDropValue}</p>
+            <p>{props.selectedDropValue}</p>
         </div>
     )
 }
