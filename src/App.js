@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from 'react'
+
 import Header from './components/Header/Header'
 import Dropdown from './components/Dropdown/Dropdown'
 import axios from 'axios'
 import './App.css'
+import { Credentials } from './Credentials';
 
 const App = () => {
+
+  const keys = Credentials()
+
   const [token, setToken] = useState('')
   const [genres, setGenres] = useState({ selectedGenre: '', listOfGenresFromApi:[] })
   const [playlist, setPlaylist] = useState({ selectedPlaylist: '', listOfPlaylistFromApi:[] })
@@ -53,23 +58,24 @@ const App = () => {
 
   }, [genres.selectedGenre]);
 
-  // eslint-disable-next-line no-undef
-  axios(`https://api.spotify.com/v1/browse/categories/${val}/playlists?limit=10`, {
-    method: 'GET',
-    header: { 'Authorization' : 'Bearer ' + token }
-  })
-  .then(playlistResponse => {
-    console.log(playlistResponse)
-    setPlaylist({
-      selectedPlaylist: playlist.selectedPlaylist,
-      listOfPlaylistFromApi: playlistResponse.data.playlist.item
-    })
-  })
+ 
 
   const genreChanged = (val) => {
     setGenres({
       selectedGenre: val,
       listOfGenresFromApi: genres.listOfGenresFromApi
+    })
+
+    axios(`https://api.spotify.com/v1/browse/categories/${val}/playlists?limit=10`, {
+      method: 'GET',
+      headers: { 'Authorization' : 'Bearer ' + token }
+    })
+    .then(playlistResponse => {
+      //console.log(playlistResponse)
+      setPlaylist({
+        selectedPlaylist: playlist.selectedPlaylist,
+        listOfPlaylistFromApi: playlistResponse.data.playlists.item
+      }) 
     })
   }
 
@@ -79,6 +85,8 @@ const App = () => {
       listOfPlaylistFromApi: playlist.listOfPlaylistFromApi
     })
   }
+
+
   
   return (
     <div className="App">

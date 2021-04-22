@@ -15,13 +15,13 @@ const Dropdown = props => {
 
     return (
         <div className="container">
-            <select value={props.selectedDropValue} onChange={dropdownChanged}>
-               {props.options.map((item, index) => 
-               <option key={index} value={item.id}>
+            <select value={props.selectedValue} onChange={dropdownChanged}>
+               {props.options.map((item, idx) => 
+               <option key={idx} value={item.id}>
                    {item.name}
                </option>)}
             </select>
-            <p>{props.selectedDropValue}</p>
+            {/* <p>{props.selectedDropValue}</p> */}
         </div>
     )
 }
