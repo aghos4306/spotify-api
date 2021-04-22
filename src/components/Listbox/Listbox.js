@@ -4,7 +4,7 @@ const Listbox = props => {
 
     const clicked = (e) => {
         e.preventDefault()
-        
+        props.clicked(e.target.id)
     }
 
     return (

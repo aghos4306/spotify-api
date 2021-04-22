@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import Header from './components/Header/Header'
 import Dropdown from './components/Dropdown/Dropdown'
 import Listbox from './components/Listbox/Listbox'
+import Detail from './components/Details/Detail'
 import axios from 'axios'
 import './App.css'
 import { Credentials } from './Credentials';
@@ -114,6 +115,7 @@ const App = () => {
         <Dropdown options={playlist.listOfPlaylistFromApi} selectedValue={playlist.selectedPlaylist} changed={playlistChanged} />
         <button type="submit">Get Categories</button>
         <Listbox items = {tracks.listOfTracksFromApi} clicked={listboxClicked} />
+        {trackDetail && <Detail {...trackDetail} />}
       </form>
     </div>
   );
