@@ -2,8 +2,11 @@ import React, { useState, useEffect } from 'react';
 import Dropdown from './components/Dropdown/Dropdown';
 import Listbox from './components/Listbox/Listbox';
 import Detail from './components/Details/Detail';
+import Header from './components/Header/Header'
 import { Credentials } from './Credentials';
 import axios from 'axios';
+
+import './App.css'
 
 const App = () => {
 
@@ -57,7 +60,7 @@ const App = () => {
       listOfGenresFromAPI: genres.listOfGenresFromAPI
     });
 
-    axios(`https://api.spotify.com/v1/browse/categories/${val}/playlists?limit=10`, {
+    axios(`https://api.spotify.com/v1/browse/categories/${val}/playlists?limit=30`, {
       method: 'GET',
       headers: { 'Authorization' : 'Bearer ' + token}
     })
@@ -82,7 +85,7 @@ const App = () => {
   const buttonClicked = e => {
     e.preventDefault();
 
-    axios(`https://api.spotify.com/v1/playlists/${playlist.selectedPlaylist}/tracks?limit=10`, {
+    axios(`https://api.spotify.com/v1/playlists/${playlist.selectedPlaylist}/tracks?limit=30`, {
       method: 'GET',
       headers: {
         'Authorization' : 'Bearer ' + token
@@ -105,19 +108,22 @@ const App = () => {
 
   return (
     <div className="container">
-      <form onSubmit={buttonClicked}>        
-          <Dropdown label="Genre :" options={genres.listOfGenresFromAPI} selectedValue={genres.selectedGenre} changed={genreChanged} />
-          <Dropdown label="Playlist :" options={playlist.listOfPlaylistFromAPI} selectedValue={playlist.selectedPlaylist} changed={playlistChanged} />
-          <div className="col-sm-6">
-            <button type='submit' className="btn btn-success">
-              Search
-            </button>
-          </div>
-          <div className="row">
-            <Listbox items={tracks.listOfTracksFromAPI} clicked={listboxClicked} />
-            {trackDetail && <Detail {...trackDetail} /> }
-          </div>        
-      </form>
+      <Header className="header" />
+      <div className="container-form" >
+        <form onSubmit={buttonClicked}>        
+            <Dropdown label="Genre :" options={genres.listOfGenresFromAPI} selectedValue={genres.selectedGenre} changed={genreChanged} className="dropdown" />
+            <Dropdown label="Playlist :" options={playlist.listOfPlaylistFromAPI} selectedValue={playlist.selectedPlaylist} changed={playlistChanged} className="dropdown" />
+            <div className="col-sm-6">
+              <button type='submit' className="btn btn-search">
+                Search
+              </button>
+            </div>
+            <div className="listbox-container">
+              <Listbox items={tracks.listOfTracksFromAPI} clicked={listboxClicked} />
+              {trackDetail && <Detail {...trackDetail} /> }
+            </div>        
+        </form>
+      </div>
     </div>
     
     
